@@ -1,20 +1,24 @@
 let lyrics;
 let keywordPositions = [];
 let keywords = ["blood", "mind", "kill", "burn", "control", "machine", "error", "dark", "soul"];
+let margin = 20;
 let totalLines = 0;
-let margin = 40;
+let fontSize, lineHeight;
 
 function preload() {
-  lyrics = loadStrings("lyrics.txt"); 
+  lyrics = loadStrings("lyrics.txt");
 }
 
 function setup() {
-  textFont('Courier');
-  textSize(14);
+  calculateFontAndHeight();
 
-  //Estimate height based on wrapping at screen width
+  // First pass: estimate required canvas height
   let x = margin;
   let y = 30;
+  totalLines = 0;
+
+  textFont('Courier');
+  textSize(fontSize);
 
   for (let i = 0; i < lyrics.length; i++) {
     let words = lyrics[i].split(' ');
@@ -24,19 +28,19 @@ function setup() {
 
       if (x + wordWidth > windowWidth - margin) {
         x = margin;
-        y += 22;
+        y += lineHeight;
         totalLines++;
       }
+
       x += wordWidth;
     }
 
     x = margin;
-    y += 22;
+    y += lineHeight;
     totalLines++;
   }
 
-  createCanvas(windowWidth, totalLines * 22 + 100);
-  background(255);
+  createCanvas(windowWidth, totalLines * lineHeight + 100);
   drawLyrics();
 }
 
@@ -45,7 +49,9 @@ function drawLyrics() {
   fill(0);
   noStroke();
   textFont('Courier');
-  textSize(14);
+  textSize(fontSize);
+
+  keywordPositions = [];
 
   let x = margin;
   let y = 30;
@@ -58,9 +64,9 @@ function drawLyrics() {
       let clean = raw.toLowerCase().replace(/[^a-z']/g, "");
       let wordWidth = textWidth(raw + " ");
 
-      if (x + wordWidth > windowWidth - margin) {
+      if (x + wordWidth > width - margin) {
         x = margin;
-        y += 22;
+        y += lineHeight;
       }
 
       text(raw, x, y);
@@ -73,7 +79,7 @@ function drawLyrics() {
     }
 
     x = margin;
-    y += 22;
+    y += lineHeight;
   }
 
   // Draw connecting lines
@@ -87,4 +93,15 @@ function drawLyrics() {
       }
     }
   }
+}
+
+function calculateFontAndHeight() {
+  // Smaller text on smaller screens
+  fontSize = windowWidth < 500 ? 11 : 14;
+  lineHeight = fontSize + 8;
+}
+
+function windowResized() {
+  resizeCanvas(1, 1); // prevent canvas flicker on mobile
+  setup(); // reprocess layout
 }
