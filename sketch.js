@@ -1,42 +1,48 @@
 let lyrics;
 let keywordPositions = [];
 let keywords = ["blood", "mind", "kill", "burn", "control", "machine", "error", "dark", "soul"];
+let margin = 20;
 let totalLines = 0;
-let margin = 40;
+let fontSize, lineHeight;
+let canvas;
 
 function preload() {
-  lyrics = loadStrings("lyrics.txt"); 
+  lyrics = loadStrings("lyrics.txt");
 }
 
 function setup() {
-  textFont('Courier');
-  textSize(14);
+  const containerWidth = document.getElementById("lyrics-canvas").offsetWidth;
 
-  //Estimate height based on wrapping at screen width
+  calculateFontAndHeight(containerWidth);
+
+  // Estimate required canvas height
   let x = margin;
   let y = 30;
+  totalLines = 0;
+
+  textFont('Courier');
+  textSize(fontSize);
 
   for (let i = 0; i < lyrics.length; i++) {
     let words = lyrics[i].split(' ');
 
     for (let j = 0; j < words.length; j++) {
       let wordWidth = textWidth(words[j] + " ");
-
-      if (x + wordWidth > windowWidth - margin) {
+      if (x + wordWidth > containerWidth - margin) {
         x = margin;
-        y += 22;
+        y += lineHeight;
         totalLines++;
       }
       x += wordWidth;
     }
 
     x = margin;
-    y += 22;
+    y += lineHeight;
     totalLines++;
   }
 
-  createCanvas(windowWidth, totalLines * 22 + 100);
-  background(255);
+  canvas = createCanvas(containerWidth, totalLines * lineHeight + 100);
+  canvas.parent("lyrics-canvas");
   drawLyrics();
 }
 
@@ -45,22 +51,22 @@ function drawLyrics() {
   fill(0);
   noStroke();
   textFont('Courier');
-  textSize(14);
+  textSize(fontSize);
+
+  keywordPositions = [];
 
   let x = margin;
   let y = 30;
 
   for (let i = 0; i < lyrics.length; i++) {
     let words = lyrics[i].split(' ');
-
     for (let j = 0; j < words.length; j++) {
       let raw = words[j];
       let clean = raw.toLowerCase().replace(/[^a-z']/g, "");
       let wordWidth = textWidth(raw + " ");
-
-      if (x + wordWidth > windowWidth - margin) {
+      if (x + wordWidth > width - margin) {
         x = margin;
-        y += 22;
+        y += lineHeight;
       }
 
       text(raw, x, y);
@@ -71,12 +77,11 @@ function drawLyrics() {
 
       x += wordWidth;
     }
-
     x = margin;
-    y += 22;
+    y += lineHeight;
   }
 
-  // Draw connecting lines
+  // Connect matching words
   stroke(200, 0, 0, 90);
   strokeWeight(0.8);
 
@@ -87,4 +92,14 @@ function drawLyrics() {
       }
     }
   }
+}
+
+function calculateFontAndHeight(width = windowWidth) {
+  fontSize = width < 500 ? 11 : 14;
+  lineHeight = fontSize + 8;
+}
+
+function windowResized() {
+  resizeCanvas(1, 1); // prevent flicker
+  setup();
 }
