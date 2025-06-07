@@ -89,17 +89,18 @@
       </div>
 
 <div id="lyrics" class="tab-content active">
-  <!-- Fallback image (only shows on small screens) -->
+  <!-- Fallback image for mobile -->
   <img
     id="lyrics-fallback"
     src="fbImage.png"
-    alt="Lyrics Visualization"
-    style="display: none; width: 100%; border-radius: 8px; margin-bottom: 20px;"
+    alt="Fallback image for lyrics sketch"
+    class="fallback-img"
   />
 
-  <!-- Actual sketch container (hidden on mobile) -->
+  <!-- Canvas sketch for desktop -->
   <div id="lyrics-canvas"></div>
 </div>
+
 
       <div id="graph" class="tab-content">
   <iframe id="graph-frame" src="" width="100%" height="1000" style="border: none;"></iframe>

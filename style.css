@@ -7,12 +7,22 @@ canvas {
   display: block;
 }
 
+/* Hide fallback image by default */
+.fallback-img {
+  display: none;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+/* Show fallback image and hide canvas on small screens */
 @media (max-width: 768px) {
   #lyrics-canvas {
     display: none;
   }
 
-  #lyrics-fallback {
+  .fallback-img {
     display: block;
   }
 }
