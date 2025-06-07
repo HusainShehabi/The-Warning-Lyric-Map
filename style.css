@@ -6,3 +6,13 @@ html, body {
 canvas {
   display: block;
 }
+
+@media (max-width: 768px) {
+  #lyrics-canvas {
+    display: none;
+  }
+
+  #lyrics-fallback {
+    display: block;
+  }
+}
