@@ -1,46 +1,18 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <title>The Warning Visualizations</title>
-  <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; }
-    .tabs { display: flex; background: #222; color: white; }
-    .tab { padding: 10px 20px; cursor: pointer; }
-    .tab.active { background: #444; }
-    .tab-content { display: none; height: 100vh; }
-    .tab-content.active { display: block; }
-    iframe { width: 100%; height: 100%; border: none; }
-    canvas { display: block; } /* p5 sketch visibility */
-  </style>
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="tabs">
-    <div class="tab active" onclick="showTab('p5')">Lyrics Visualization</div>
-    <div class="tab" onclick="showTab('network')">Network Graph</div>
-  </div>
+    <title>Sketch</title>
 
-  <div id="p5" class="tab-content active">
-    <!-- p5.js sketch will be drawn here -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
     <script src="sketch.js"></script>
-  </div>
-
-  <div id="network" class="tab-content">
-    <!-- iframe for the HTML network file -->
-    <iframe src="warning_network.html"></iframe>
-  </div>
-
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-
-      document.getElementById(tabId).classList.add('active');
-      document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
-    }
-  </script>
-
-</body>
+  </body>
 </html>
